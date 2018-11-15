@@ -1,0 +1,21 @@
+@using ent.Models
+@model loginObj
+<div id="wrapper">
+    <h1>Welcome</h1>
+    <a href="/">
+      Back
+    </a>
+    <div class="box">
+      <form asp-action="Login" asp-controller="Home" method="POST">
+        <span asp-validation-for="Email"></span>
+        <label asp-for="Email"></label>
+        <input asp-for="Email">
+        <span asp-validation-for="Password"></span>
+        <label asp-for="Password"></label>
+        <input asp-for="Password">
+        <input type="submit" value="Submit">
+      </form>
+        
+    </div>
+</div>
+

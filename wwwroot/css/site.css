@@ -1,0 +1,26 @@
+﻿#wrapper{
+    text-align: center;
+}
+.box{
+    width: 70%;
+    margin: auto;
+    border: 2px solid black;
+    text-align: left;
+    padding: 20px;
+    
+}
+.half{
+    display: inline-block;
+    vertical-align: top;
+    width: 49%;
+}
+form input, form label{
+    display: block;
+}
+form{
+    text-align: left;
+}
+th, td{
+    padding: 10px 20px;
+
+}

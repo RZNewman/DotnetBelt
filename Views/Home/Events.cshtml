@@ -1,0 +1,107 @@
+@using ent.Models
+<div id="wrapper">
+    <h1>Activity Center</h1>
+    <h4>Welcome @ViewBag.User.FirstName</h4>
+    
+    <a href="logout">Logout</a>
+    <div class="box">
+        <table>
+            <tbody>
+                <tr>
+                    <th>
+                        Activity
+                    </th>
+                    <th>
+                        Date / Time
+                    </th>
+                    <th>
+                        Duration
+                    </th>
+                    <th>
+                        Coordinator
+                    </th>
+                    <th>
+                        # People Going
+                    </th>
+                    <th>
+                        Action
+                    </th>
+                </tr>
+                @foreach(Event e in ViewBag.Events){
+                    if(e.End>DateTime.Now){
+                        <tr>
+                            <td>
+                                <a href="events/@e.EventId">@e.Title</a>
+                            </td>
+                            <td>
+                                @e.Start
+
+                            </td>
+                            <td>
+                                @e.Durration 
+                                @if(e.Type == Event.TimeType.Days){
+                                    <text>Days</text>
+                                }
+                                else if(e.Type == Event.TimeType.Hours){
+                                    <text>Hours</text>
+                                }
+                                else{
+                                <text>Minutes</text>
+                                }
+                                
+                            </td>
+                            <td>
+                                
+                                    @e.Creator.FirstName
+                                
+                            </td>
+                            <td>
+                                @e.Guests.Count
+                            </td>
+                            <td>
+                                @{
+                                    if(e.UserId==ViewBag.User.UserId){
+                                        <a href="events/@e.EventId/delete">Delete</a>
+                                    }
+                                    else{
+                                        bool conflict = false;
+                                        foreach(Event ev in ViewBag.Attending){
+                                            if(e.Start>ev.Start){
+                                                if(!(e.Start>ev.End)){
+                                                    conflict = true;
+                                                    break;
+                                                }
+
+                                            }
+                                            else {
+                                                if(!(e.End<ev.Start)){
+                                                    conflict = true;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        if(ViewBag.Attending.Contains(e)){
+                                            <a href="events/@e.EventId/leave">Leave</a>
+                                        }
+                                        else if(conflict){
+                                            <text>Conflict</text>
+                                        }
+                                        else{
+                                            <a href="events/@e.EventId/join">Join</a>
+                                        }
+                                    }
+                                    
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+      
+        
+    </div>
+    <a href="newEvent">Add New Activity</a>
+    
+</div>
+

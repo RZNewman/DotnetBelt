@@ -1,0 +1,58 @@
+@using ent.Models
+<div id="wrapper">
+    <h1>
+        @ViewBag.Event.Title
+    </h1>
+    <a href="/">
+        Home
+    </a>
+    <h3>
+        Host: @ViewBag.Event.Creator.FirstName
+    </h3>
+    <h3>
+        Description
+    </h3>
+    <p>@ViewBag.Event.Description</p>
+    <h2>Care to join?</h2>
+    <p>
+         @{
+            Event e = ViewBag.Event;
+            if(e.UserId==ViewBag.User.UserId){
+                <a href="/events/@e.EventId/delete">Delete</a>
+            }
+            else{
+                bool conflict = false;
+                foreach(Event ev in ViewBag.Attending){
+                    if(e.Start>ev.Start){
+                        if(!(e.Start>ev.End)){
+                            conflict = true;
+                            break;
+                        }
+
+                    }
+                    else {
+                        if(!(e.End<ev.Start)){
+                            conflict = true;
+                            break;
+                        }
+                    }
+                }
+                if(ViewBag.Attending.Contains(e)){
+                    <a href="/events/@e.EventId/leave">Leave</a>
+                }
+                else if(conflict){
+                    <text>Conflict</text>
+                }
+                else{
+                    <a href="/events/@e.EventId/join">Join</a>
+                }
+            }
+            
+        }
+    </p>
+    <h3>Participants:</h3>
+    @foreach(Atendee a in @ViewBag.Event.Guests){
+        <p>@a.User.FirstName</p>
+    }
+</div>
+
